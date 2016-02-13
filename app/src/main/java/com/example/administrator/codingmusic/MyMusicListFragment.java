@@ -1,6 +1,7 @@
 package com.example.administrator.codingmusic;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -65,6 +66,7 @@ public class MyMusicListFragment extends Fragment implements AdapterView.OnItemC
         listView_my_music.setOnItemClickListener(this);
         imageViewPlayPause.setOnClickListener(this);
         imageViewNext.setOnClickListener(this);
+        imageViewAlbum.setOnClickListener(this);
         loadData();
         //绑定播放服务
         mainActivity.bindPlayService();
@@ -135,8 +137,14 @@ public class MyMusicListFragment extends Fragment implements AdapterView.OnItemC
             }
             case R.id.iv_next: {
                 mainActivity.playService.next();
+                break;
             }
-            break;
+            case R.id.imageView_album:{
+                Intent intent=new Intent(mainActivity,PlayActivity.class);
+                startActivity(intent);
+                break;
+            }
+
             default:
                 break;
         }
