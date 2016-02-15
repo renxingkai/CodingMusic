@@ -61,7 +61,7 @@
                 android:id="@+id/iv_play_pause"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:src="@mipmap/play" />
+                android:src="@mipmap/player_btn_play_normal" />
 
             <ImageView
                 android:id="@+id/iv_next"

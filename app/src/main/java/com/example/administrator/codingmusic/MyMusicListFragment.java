@@ -44,6 +44,8 @@ public class MyMusicListFragment extends Fragment implements AdapterView.OnItemC
 
     private boolean isPause = false;
 
+    private int position = 0;//当前播放位置
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -111,6 +113,8 @@ public class MyMusicListFragment extends Fragment implements AdapterView.OnItemC
             textViewsong.setText(mp3Info.getTitle());
             textViewsinger.setText(mp3Info.getArtist());
             imageViewPlayPause.setImageResource(R.mipmap.player_btn_pause_normal);
+
+            this.position = position;
         }
     }
 
@@ -139,8 +143,9 @@ public class MyMusicListFragment extends Fragment implements AdapterView.OnItemC
                 mainActivity.playService.next();
                 break;
             }
-            case R.id.imageView_album:{
-                Intent intent=new Intent(mainActivity,PlayActivity.class);
+            case R.id.imageView_album: {
+                Intent intent = new Intent(mainActivity, PlayActivity.class);
+                intent.putExtra("isPause", isPause);
                 startActivity(intent);
                 break;
             }

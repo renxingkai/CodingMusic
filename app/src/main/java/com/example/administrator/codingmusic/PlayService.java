@@ -40,6 +40,10 @@ public class PlayService extends Service {
     public PlayService() {
     }
 
+    public int getCurrentPosition(){
+        return currentPosition;
+    }
+
     /**
      * 可以返回playservice对象的内部类
      */
@@ -73,8 +77,13 @@ public class PlayService extends Service {
         @Override
         public void run() {
             while (true) {
-                if (musicUpdateListener != null) {
+                if (musicUpdateListener != null && mediaPlayer != null && mediaPlayer.isPlaying()) {
                     musicUpdateListener.onPublish(getCurrentProgress());
+                }
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -103,6 +112,16 @@ public class PlayService extends Service {
             }
 
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (es != null && !es.isShutdown()) {
+            es.shutdown();
+            es = null;
+        }
+
     }
 
     public int getDuration() {
@@ -164,8 +183,8 @@ public class PlayService extends Service {
         }
     }
 
-    public boolean isPlaying(){
-        if(mediaPlayer!=null){
+    public boolean isPlaying() {
+        if (mediaPlayer != null) {
             return mediaPlayer.isPlaying();
         }
         return false;
