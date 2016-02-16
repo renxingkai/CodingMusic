@@ -2,6 +2,7 @@ package com.example.administrator.codingmusic;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -70,16 +71,27 @@ public class MyMusicListFragment extends Fragment implements AdapterView.OnItemC
         imageViewNext.setOnClickListener(this);
         imageViewAlbum.setOnClickListener(this);
         loadData();
-        //绑定播放服务
-        mainActivity.bindPlayService();
+
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //绑定
+        mainActivity.bindPlayService();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //解除绑定
+        mainActivity.unbindPlayService();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        //解除绑定播放服务
-        mainActivity.unbindPlayService();
     }
 
     public static MyMusicListFragment newInstance() {
@@ -112,7 +124,13 @@ public class MyMusicListFragment extends Fragment implements AdapterView.OnItemC
             Mp3Info mp3Info = mp3Infos.get(position);
             textViewsong.setText(mp3Info.getTitle());
             textViewsinger.setText(mp3Info.getArtist());
-            imageViewPlayPause.setImageResource(R.mipmap.player_btn_pause_normal);
+            Bitmap smallAlubmImage=MediaUtils.getArtwork(mainActivity,mp3Info.getId(),mp3Info.getAibumId(),true,true);
+            imageViewAlbum.setImageBitmap(smallAlubmImage);
+            if (mainActivity.playService.isPlaying()) {
+                imageViewPlayPause.setImageResource(R.mipmap.pause);
+            } else {
+                imageViewPlayPause.setImageResource(R.mipmap.play);
+            }
 
             this.position = position;
         }
@@ -125,17 +143,15 @@ public class MyMusicListFragment extends Fragment implements AdapterView.OnItemC
                 if (mainActivity.playService.isPlaying()) {
                     imageViewPlayPause.setImageResource(R.mipmap.player_btn_play_normal);
                     mainActivity.playService.pause();
-                    isPause = true;
+//                    isPause = true;
                 } else {
-                    if (isPause) {
+                    if (mainActivity.playService.isPause()) {
                         imageViewPlayPause.setImageResource(R.mipmap.player_btn_pause_normal);
                         mainActivity.playService.start();
                     } else {
                         mainActivity.playService.play(0);//从头开始播放
                     }
-                    isPause = false;
-
-
+//                    isPause = false;
                 }
                 break;
             }

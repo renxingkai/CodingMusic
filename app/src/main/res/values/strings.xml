@@ -4,5 +4,7 @@
     <string name="app_name">星语心愿</string>
     <string name="action_contact">Contact</string>
     <string name="action_settings">123</string>
-
+    <string name="random_play">随机播放</string>
+    <string name="order_play">顺序播放</string>
+    <string name="single_play">单曲循环</string>
 </resources>

@@ -12,6 +12,7 @@ import com.example.administrator.codingmusic.vo.Mp3Info;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -24,7 +25,7 @@ import java.util.concurrent.Executors;
  * 5.上一首
  * 6.获取当前歌曲进度条
  */
-public class PlayService extends Service {
+public class PlayService extends Service implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
 
     private static final String TAG = "PlayService";
 
@@ -37,11 +38,62 @@ public class PlayService extends Service {
 
     private ExecutorService es = Executors.newSingleThreadExecutor();
 
+    private boolean isPause = false;
+    //播放模式
+
+
+    public static final int ORDER_PLAY = 1;
+    public static final int RANDOM_PLAY = 2;
+    public static final int SINGLE_PLAY = 3;
+    private int playMode = ORDER_PLAY;
+
+    public boolean isPause() {
+        return isPause;
+    }
+
     public PlayService() {
     }
 
-    public int getCurrentPosition(){
+    public int getPlayMode() {
+        return playMode;
+    }
+
+    public void setPlayMode(int playMode) {
+        this.playMode = playMode;
+    }
+
+    public int getCurrentPosition() {
         return currentPosition;
+    }
+
+    private Random random = new Random();
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+
+        switch (playMode) {
+            case ORDER_PLAY: {
+                next();
+                break;
+            }
+            case SINGLE_PLAY: {
+                play(currentPosition);
+                break;
+            }
+            case RANDOM_PLAY: {
+                play(random.nextInt(mp3Infos.size()));
+                break;
+            }
+            default:
+                break;
+        }
+
+    }
+
+    @Override
+    public boolean onError(MediaPlayer mp, int what, int extra) {
+        mp.reset();
+        return false;
     }
 
     /**
@@ -66,7 +118,8 @@ public class PlayService extends Service {
         super.onCreate();
         mediaPlayer = new MediaPlayer();
         mp3Infos = MediaUtils.getMp3Infos(this);
-
+        mediaPlayer.setOnCompletionListener(this);
+        mediaPlayer.setOnErrorListener(this);
         es.execute(updateStatusRunnable);
     }
 
@@ -145,6 +198,7 @@ public class PlayService extends Service {
     public void pause() {
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
+            isPause = true;
         }
     }
 
@@ -162,10 +216,8 @@ public class PlayService extends Service {
 
     /**
      * 上一首
-     *
-     * @param position
      */
-    public void prev(int position) {
+    public void prev() {
         if (currentPosition - 1 < 0) {
             currentPosition = mp3Infos.size() - 1;
         } else {
