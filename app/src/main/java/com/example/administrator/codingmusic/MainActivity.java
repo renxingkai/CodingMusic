@@ -38,6 +38,8 @@ import com.example.administrator.codingmusic.com.astuetz.viewpager.extensions.sa
 
 public class MainActivity extends BaseActivity {
 
+    private static final String TAG="MainActivity";
+
     private final Handler handler = new Handler();
 
     private PagerSlidingTabStrip tabs;

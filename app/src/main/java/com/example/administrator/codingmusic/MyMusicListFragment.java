@@ -124,14 +124,15 @@ public class MyMusicListFragment extends Fragment implements AdapterView.OnItemC
             Mp3Info mp3Info = mp3Infos.get(position);
             textViewsong.setText(mp3Info.getTitle());
             textViewsinger.setText(mp3Info.getArtist());
-            Bitmap smallAlubmImage=MediaUtils.getArtwork(mainActivity,mp3Info.getId(),mp3Info.getAibumId(),true,true);
+
+            Bitmap smallAlubmImage = MediaUtils.getArtwork(mainActivity, mp3Info.getId(), mp3Info.getAlbumId(), false, true);
             imageViewAlbum.setImageBitmap(smallAlubmImage);
+
             if (mainActivity.playService.isPlaying()) {
                 imageViewPlayPause.setImageResource(R.mipmap.pause);
             } else {
                 imageViewPlayPause.setImageResource(R.mipmap.play);
             }
-
             this.position = position;
         }
     }

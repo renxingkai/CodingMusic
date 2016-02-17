@@ -21,6 +21,8 @@ import java.util.ArrayList;
  */
 public class MyMusicListAdapter extends BaseAdapter {
 
+    private static final String TAG="MyMusicListAdapter";
+
     private Context ctx;
     private ArrayList<Mp3Info> mp3Infos;
 

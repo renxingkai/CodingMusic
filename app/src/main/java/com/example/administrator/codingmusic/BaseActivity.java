@@ -16,6 +16,8 @@ import android.support.v4.app.FragmentActivity;
  */
 public abstract class BaseActivity extends FragmentActivity {
 
+    private static final String TAG="BaseActivity";
+
 
     protected PlayService playService;
 

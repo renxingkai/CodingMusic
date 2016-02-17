@@ -7,11 +7,14 @@ package com.example.administrator.codingmusic.vo;
  * @time: 2016/2/5  23:38
  */
 public class Mp3Info {
+
+    private static final String TAG="Mp3Info";
+
     private long id;
     private String title;
     private String artist;
     private String album;
-    private long aibumId;
+    private long albumId;
     private long duration;
     private long size;
     private String url;
@@ -49,12 +52,12 @@ public class Mp3Info {
         this.album = album;
     }
 
-    public long getAibumId() {
-        return aibumId;
+    public long getAlbumId() {
+        return albumId;
     }
 
-    public void setAibumId(long aibumId) {
-        this.aibumId = aibumId;
+    public void setAlbumId(long albumId) {
+        this.albumId = albumId;
     }
 
     public long getDuration() {

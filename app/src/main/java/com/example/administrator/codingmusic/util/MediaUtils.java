@@ -80,7 +80,7 @@ public class MediaUtils {
      * @param context //    * @param small
      * @return
      */
-  /*  public static Bitmap getDefaultArtwork(Context context, boolean small) {
+    public static Bitmap getDefaultArtwork(Context context, boolean small) {
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.RGB_565;
@@ -90,7 +90,7 @@ public class MediaUtils {
         }
         return BitmapFactory.decodeStream(context.getResources().
                 openRawResource(R.mipmap.app_logo2), null, options);
-    }*/
+    }
     public static long[] getMp3InfoIds(Context context) {
         Cursor cursor = context.getContentResolver().query(
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
@@ -109,16 +109,10 @@ public class MediaUtils {
         return ids;
     }
 
-    public static Bitmap getDefaultArtwork(Context context,boolean small) {
-        BitmapFactory.Options opts = new BitmapFactory.Options();
-        opts.inPreferredConfig = Bitmap.Config.RGB_565;
-        if(small){  //返回小图片
-            return BitmapFactory.decodeStream(context.getResources().openRawResource(R.mipmap.music_album), null, opts);
-        }
-        return BitmapFactory.decodeStream(context.getResources().openRawResource(R.mipmap.music_album), null, opts);
-    }
 
-    public static Bitmap getArtwork(Context context, long song_id, long album_id, boolean allowdefalut, boolean small){
+
+    public static Bitmap getArtwork(Context context, long song_id, long album_id,
+                                    boolean allowdefalut, boolean small){
         if(album_id < 0) {
             if(song_id < 0) {
                 Bitmap bm = getArtworkFromFile(context, song_id, -1);
@@ -204,46 +198,6 @@ public class MediaUtils {
         }
         return candidate;
     }
-
-//    private static Bitmap getArtworkFromFile(Context context, long songid, long albumid) {
-//        Bitmap bm = null;
-//        byte[] art = null;
-//        String path = null;
-//        if (albumid < 0 && songid < 0) {
-//            throw new IllegalArgumentException("Must specify an album or a song id");
-//        }
-//        try {
-//            if (albumid < 0) {
-//                Uri uri = Uri.parse("content://media/external/audio/media/" + songid + "/albumart");
-//                ParcelFileDescriptor pfd = context.getContentResolver().openFileDescriptor(uri, "r");
-//                if (pfd != null) {
-//                    FileDescriptor fd = pfd.getFileDescriptor();
-//                    bm = BitmapFactory.decodeFileDescriptor(fd);
-//                }
-//            } else {
-//                Uri uri = ContentUris.withAppendedId(sArtworkUri, albumid);
-//                ParcelFileDescriptor pfd = context.getContentResolver().openFileDescriptor(uri, "r");
-//                if (pfd != null) {
-//                    FileDescriptor fd = pfd.getFileDescriptor();
-//                    bm = BitmapFactory.decodeFileDescriptor(fd);
-//                }
-//            }
-//        } catch (FileNotFoundException ex) {
-//
-//        }
-//        if (bm != null) {
-//            mCachedBit = bm;
-//        }
-//        return bm;
-//    }
-
-
-   /* private static Bitmap getDefaultArtwork(Context context) {
-        BitmapFactory.Options opts = new BitmapFactory.Options();
-        opts.inPreferredConfig = Bitmap.Config.RGB_565;
-        return BitmapFactory.decodeStream(
-                context.getResources().openRawResource(R.mipmap.app_logo2), null, opts);
-    }*/
 
 
     private static Bitmap getArtworkFromFile(Context context, long songid, long albumid){
